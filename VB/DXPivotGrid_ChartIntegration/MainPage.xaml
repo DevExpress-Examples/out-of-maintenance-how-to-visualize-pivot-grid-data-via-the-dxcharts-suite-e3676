@@ -1,0 +1,60 @@
+﻿<UserControl xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:dxpg="http://schemas.devexpress.com/winfx/2008/xaml/pivotgrid"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:DXPivotGrid_ChartIntegration"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="DXPivotGrid_ChartIntegration.MainPage"
+             d:DesignHeight="300" d:DesignWidth="400"
+             mc:Ignorable="d">
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="520"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <CheckBox x:Name="cbTransposeDataSource" Content="Transpose Data Source" 
+                  Margin="5,10,5,10">
+            <CheckBox.IsChecked>
+                <Binding ElementName="pivotGridControl1" Path="ChartProvideDataByColumns"
+                         Mode="TwoWay" Converter="{local:InverseBooleanConverter}"/>
+            </CheckBox.IsChecked>
+        </CheckBox>
+        <dxpg:PivotGridControl ShowRowGrandTotals="False" ShowColumnGrandTotals="False"
+                               Grid.Column="0" Grid.Row="1" x:Name="pivotGridControl1"
+                               ShowFilterHeaders="False" ChartSelectionOnly="False"
+                               ChartFieldValuesProvideMode="DisplayText"
+                               ChartProvideDataByColumns="True">
+            <dxpg:PivotGridControl.Fields>
+                <dxpg:PivotGridField SortByField="{Binding ElementName=fieldQuarter}"
+                                     x:Name="fieldCountry" FieldName="ShipCountry" 
+                                     SortOrder="Descending" AllowSort="False"
+                                     AllowFilter="False" Caption="Country" 
+                                     Area="RowArea" TopValueCount="8"
+                                     AllowSortBySummary="False"/>
+                <dxpg:PivotGridField x:Name="fieldQuarter" FieldName="ShippedDate" 
+                                     AllowSort="False" AllowFilter="False"
+                                     Caption="Quarter" Area="ColumnArea" 
+                                     GroupInterval="DateQuarter" 
+                                     ValueFormat="Qtr {0}"/>
+                <dxpg:PivotGridField x:Name="fieldFreight" FieldName="Freight" 
+                                     Area="DataArea"/>
+            </dxpg:PivotGridControl.Fields>
+        </dxpg:PivotGridControl>
+        <dxc:ChartControl DataSource="{Binding ElementName=pivotGridControl1, Path=ChartDataSource}"
+                          x:Name="chartControl1" Grid.Column="1" Grid.Row="1">
+            <dxc:ChartControl.Diagram>
+                <dxc:XYDiagram2D SeriesDataMember="Series">
+                    <dxc:XYDiagram2D.SeriesTemplate>
+                        <dxc:BarSideBySideSeries2D ArgumentDataMember="Arguments" 
+                                                   ValueDataMember="Values"/>
+                    </dxc:XYDiagram2D.SeriesTemplate>
+                </dxc:XYDiagram2D>
+            </dxc:ChartControl.Diagram>
+        </dxc:ChartControl>
+    </Grid>
+</UserControl>
