@@ -1,3 +1,8 @@
+<!-- default file list -->
+*Files to look at*:
+
+* [MainPage.xaml](./CS/DXPivotGrid_ChartIntegration/MainPage.xaml) (VB: [MainPage.xaml](./VB/DXPivotGrid_ChartIntegration/MainPage.xaml))
+<!-- default file list end -->
 # How to visualize pivot grid data via the DXCharts Suite
 
 
